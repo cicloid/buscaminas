@@ -5,11 +5,11 @@ ruby '2.5.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'mini_magick', '~> 4.8'
-gem 'pg', '>= 0.18', '< 2.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'jbuilder', '~> 2.5'
 gem 'mini_racer', platforms: :ruby
+gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.0'
 gem 'redis', '~> 4.0'
@@ -21,6 +21,7 @@ gem 'webpacker'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
   gem 'rspec-rails', '~> 3.7'
 end
 
@@ -33,10 +34,11 @@ group :development do
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.15'
-  gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
+  gem 'dox', require: false
+  gem 'factory_bot'
+  gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 3.1'
 end
 
