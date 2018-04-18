@@ -4,6 +4,7 @@ class Board
   SURROUND = [-1, 0, 1].product([-1, 0, 1]) - [[0, 0]]
 
   DIFFICULTY = {
+    test: [3, 3, 1],
     beginner: [8, 8, 10],
     intermediate: [16, 16, 40],
     advanced: [24, 24, 99]
