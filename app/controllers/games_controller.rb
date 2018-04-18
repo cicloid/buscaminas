@@ -1,16 +1,22 @@
 class GamesController < ApplicationController
   def index
+    @games = Game.all
+    render json: @games
   end
 
   def show
-  end
+    @game = Game.find(params[:id])
 
-  def update
+    render json: @game
   end
 
   def create
+    @game = Game.new(params[:game])
+    if @game.save
+      render json: @game
+    else
+      render status: :conflict
+    end
   end
 
-  def destroy
-  end
 end

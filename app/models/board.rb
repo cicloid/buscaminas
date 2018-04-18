@@ -1,4 +1,25 @@
 class Board
+  class << self
+
+    def load(value)
+      if value.blank?
+        new
+      else
+        parsed = JSON.load value
+        board = new(level: parsed['difficulty'] || :beginner)
+        board.grid = Array.new(parsed['rows']) {|row|
+          Array.new(parsed['cols']) {|col|
+            Cell.load parsed['cells'][row][col]
+          }
+        }
+      end
+    end
+
+    def dump(value)
+      value.to_json
+    end
+  end
+
   attr_accessor :rows, :cols, :grid, :mines
 
   SURROUND = [-1, 0, 1].product([-1, 0, 1]) - [[0, 0]]

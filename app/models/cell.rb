@@ -2,7 +2,7 @@ class Cell
   attr_accessor :x, :y, :mine, :revealed, :flagged, :adjacent_mines
 
   class << self
-    def load_from_hash(hash)
+    def load(hash)
       n = new hash['x'], hash['y'], hash['mine']
       n.revealed = hash['revealed']
       n.flagged = hash['flagged']
