@@ -14,6 +14,7 @@ class Board
   def initialize(level: :beginner)
     @rows, @cols, @mines = DIFFICULTY[level.to_sym]
     @level = level
+    @lost = false
 
     @grid = Array.new(@rows) {|row|
       Array.new(@cols) {|col|
@@ -23,7 +24,7 @@ class Board
   end
 
   def lost?
-    @lost = !@grid.flatten.reject(&:revealed?).reject(&:boobytrapped?).empty?
+    @grid.flatten.select(&:revealed?).select(&:boobytrapped?).any?
   end
 
   def won?
@@ -74,7 +75,7 @@ class Board
   def reveal_tiles(row, col)
     return if @grid[row][col].flagged?
     @grid[row][col].reveal!
-    cell_mines = get_adjecent_mines(row, col) || 0
+    cell_mines = @grid[row][col].adjacent_mines
     return if cell_mines > 0
     neighbors = find_neighbors(row, col)
     neighbors.each do |row, col|

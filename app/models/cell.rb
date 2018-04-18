@@ -43,6 +43,20 @@ class Cell
     @flagged = !@flagged
   end
 
+  def get_char
+    if boobytrapped? && revealed?
+      "M"
+    elsif flagged?
+      "F"
+    elsif !adjacent_mines.nil? && adjacent_mines > 0 && revealed?
+          adjacent_mines
+    elsif revealed?
+      " "
+    else
+      "-"
+    end
+  end
+
   def to_hash
     {
       'x': @x,
@@ -50,7 +64,8 @@ class Cell
       'mine': @mine,
       'revealed': @revealed,
       'flagged': @flagged,
-      'adjacent_mines': @adjacent_mines
+      'adjacent_mines': @adjacent_mines,
+      'char': get_char
     }
   end
 

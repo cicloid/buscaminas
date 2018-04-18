@@ -13,7 +13,6 @@ class BoardEncoder
         cell.adjacent_mines = pcell['adjacent_mines'] || 0
       end
     end
-    board.grid.flatten.map {|cell| board.get_adjecent_mines(cell.x, cell.y)}
     board
   end
 

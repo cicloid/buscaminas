@@ -13,25 +13,11 @@ class Cell extends Component {
     this.click = this.props.click
   }
 
-  cell_string() {
-    if (this.cell.mine && this.cell.revealead) {
-      return '[   ]'
-    } else if (this.cell.flagged) {
-      return '  F  '
-    } else if (this.cell.adjacent_mines > 0 && this.cell.revealed) {
-      return `  ${this.cell.adjacent_mines}  `
-    } else {
-      return '[ - ]'
-    }
-
-  }
-
-
   render() {
     const cell = this.cell
     return (
       <div onClick={(e) => this.click(e, cell)} >
-        {this.cell_string()}
+        {this.cell.char}
       </div>
     )
 
@@ -62,8 +48,8 @@ class Board extends Component {
       return (
         <table>
           <tbody>
-            {grid.map(row => (
-              <tr key={row} >
+            {grid.map((row, index) => (
+              <tr key={`${row.id}${index}`}>
                 {row.map(cell => (
                   <td>
                     <Cell key={`${cell.x}${cell.y}`} cell={cell} click={click}/>
@@ -119,7 +105,6 @@ class Minesweeper extends Component {
       .then(res => res.json())
       .then(
         (result) => {
-          debugger
           this.setState({
             game: result,
             isPlaying: true
@@ -155,7 +140,8 @@ class Minesweeper extends Component {
       .then(
         (result) => {
           this.setState({
-            isPlaying: false
+            isPlaying: false,
+            game: result
           })
           this.updateGame()
         }
@@ -175,8 +161,10 @@ class Minesweeper extends Component {
       .then(
         (result) => {
           this.setState({
+            isPlaying: false,
             game: result
           })
+          this.updateGame()
         }
       )
 
