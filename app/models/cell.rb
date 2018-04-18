@@ -6,7 +6,7 @@ class Cell
       n = new hash['x'], hash['y'], hash['mine']
       n.revealed = hash['revealed']
       n.flagged = hash['flagged']
-      n.adjacent_mines = hash['adjacent_mines']
+      n.adjacent_mines = hash['adjacent_mines'] || 0
     end
   end
 

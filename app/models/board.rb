@@ -1,26 +1,6 @@
 class Board
-  class << self
 
-    def load(value)
-      if value.blank?
-        new
-      else
-        parsed = JSON.load value
-        board = new(level: parsed['difficulty'] || :beginner)
-        board.grid = Array.new(parsed['rows']) {|row|
-          Array.new(parsed['cols']) {|col|
-            Cell.load parsed['cells'][row][col]
-          }
-        }
-      end
-    end
-
-    def dump(value)
-      value.to_json
-    end
-  end
-
-  attr_accessor :rows, :cols, :grid, :mines
+  attr_accessor :rows, :cols, :grid, :mines, :level
 
   SURROUND = [-1, 0, 1].product([-1, 0, 1]) - [[0, 0]]
 
@@ -43,7 +23,7 @@ class Board
   end
 
   def lost?
-    @lost
+    @lost = !@grid.flatten.reject(&:revealed?).reject(&:boobytrapped?).empty?
   end
 
   def won?
@@ -63,6 +43,7 @@ class Board
         current_mines += 1
       end
     end
+    @grid.flatten.map {|cell| get_adjecent_mines(cell.x, cell.y)}
   end
 
   def reveal(row, col)
@@ -93,7 +74,7 @@ class Board
   def reveal_tiles(row, col)
     return if @grid[row][col].flagged?
     @grid[row][col].reveal!
-    cell_mines = get_adjecent_mines(row, col)
+    cell_mines = get_adjecent_mines(row, col) || 0
     return if cell_mines > 0
     neighbors = find_neighbors(row, col)
     neighbors.each do |row, col|
@@ -135,7 +116,7 @@ class Board
           "M"
         elsif cell.flagged?
           "F"
-        elsif cell.adjacent_mines > 0 && cell.revealed?
+        elsif !cell.adjacent_mines.nil? && cell.adjacent_mines > 0 && cell.revealed?
           cell.adjacent_mines
         elsif cell.revealed?
           " "
