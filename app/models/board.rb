@@ -26,12 +26,8 @@ class Board
   end
 
   def won?
-    @grid.each do |row|
-      row.each do |cell|
-        return false if cell.revealed? && !cell.boobytrapped?
-      end
-    end
-    true
+    unopened_cells = @grid.flatten.reject(&:revealed?).size
+    unopened_cells == @mines
   end
 
   def boobytrap_the_board!
@@ -51,9 +47,17 @@ class Board
   def reveal(row, col)
     if @grid[row][col].boobytrapped?
       @lost = true
+      @grid[row][col].reveal!
     else
       reveal_tiles(row, col)
     end
+  end
+
+  def flag(row, col)
+    cell = @grid[row][col]
+    return if cell.revealed?
+
+    cell.toggle_flag!
   end
 
   def get_adjecent_mines(row, col)

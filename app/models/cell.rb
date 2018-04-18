@@ -31,8 +31,16 @@ class Cell
     @revealed == true
   end
 
+  def unrevealed?
+    @revealed == false
+  end
+
   def reveal!
     @revealed = true
+  end
+
+  def toggle_flag!
+    @flagged = !@flagged
   end
 
   def to_hash
