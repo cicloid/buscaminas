@@ -49,7 +49,8 @@ class Cell
       'y': @y,
       'mine': @mine,
       'revealed': @revealed,
-      'flagged': @flagged
+      'flagged': @flagged,
+      'adjacent_mines': @adjacent_mines
     }
   end
 
